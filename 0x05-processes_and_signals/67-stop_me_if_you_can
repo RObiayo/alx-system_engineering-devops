@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Function to handle the termination signal (SIGTERM)
+function handle_sigterm() {
+    echo "I am invincible!!!"
+    # Find the PID of the '7-highlander' process and kill it
+    pid=$(pgrep -f "7-highlander")
+    if [[ -n "$pid" ]]; then
+        echo "Killing '7-highlander' process (PID: $pid)"
+        kill "$pid"
+    fi
+    exit 0
+}
+
+# Register the signal handler for SIGTERM
+trap handle_sigterm SIGTERM
+
+# Infinite loop
+while true; do
+    echo "To infinity and beyond"
+    sleep 2
+done

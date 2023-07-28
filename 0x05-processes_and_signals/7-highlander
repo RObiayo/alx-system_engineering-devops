@@ -1,1 +1,15 @@
+#!/usr/bin/env bash
+# func to handle the termination signal (SIGTERM)
+function handle_sigterm() {
+    echo "I am invincible!!!"
+    exit 0
+}
 
+# Register the signal handler for SIGTERM
+trap handle_sigterm SIGTERM
+
+# Infinite loop
+while true; do
+    echo "To infinity and beyond"
+    sleep 2
+done
