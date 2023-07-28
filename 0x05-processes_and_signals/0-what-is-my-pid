@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Shows my pld
+
+echo $$
