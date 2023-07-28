@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# Func to print process hierarchy recursively
+function print_process_tree() {
+    local pid=$1
+    local depth=$2
+    local spacers=""
+
+    for ((i=0; i<$depth; i++)); do
+        spacers+="  "
+    done
+
+    # Get process info for the given PID
+    local info=$(ps -p $pid -o pid= -o ppid= -o user= -o comm= | sed -n '2p')
+
+    # If process info found, print it along with hierarchy
+    if [[ -n "$info" ]]; then
+        local pid=$(echo "$info" | awk '{print $1}')
+        local ppid=$(echo "$info" | awk '{print $2}')
+        local user=$(echo "$info" | awk '{print $3}')
+        local command=$(echo "$info" | awk '{print $4}')
+
+        echo "$spacers|- PID: $pid | PPID: $ppid | User: $user | Command: $command"
+
+        # Recursively call this function for child processes
+        local child_pids=$(ps -o pid= -o ppid= | awk -v ppid="$pid" '$2 == ppid {print $1}')
+        for child_pid in $child_pids; do
+            print_process_tree "$child_pid" $((depth + 1))
+        done
+    fi
+}
+
+# Major script commences
+
+echo "-------- Currently Running Processes --------"
+
+# Find process info for all running processes and print the process hierarchy for each one
+ps -eo pid= | while read -r pid; do
+    print_process_tree "$pid" 0
+done

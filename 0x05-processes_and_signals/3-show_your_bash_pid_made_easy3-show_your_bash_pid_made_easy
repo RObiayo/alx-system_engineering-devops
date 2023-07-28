@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Using pgrep to locate PIDs and process names of processes have the word "bash"
+pgrep_output=$(pgrep -l bash)
+
+# Showing PID and process name
+echo "$pgrep_output" | while read -r pid process_name; do
+    echo "PID: $pid | Process Name: $process_name"
+done

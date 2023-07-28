@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# shellcheck disable=SC2009
+
+# Utilizing ps and grep to locate lines containing the word "bash"
+ps_output=$(ps -e | grep bash)
+
+# Showing the result
+echo "$ps_output"
